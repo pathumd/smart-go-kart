@@ -12,7 +12,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.dashboard = Ui_MainWindow()
         self.dashboard.initialize_gps()
         self.dashboard.setupUi(self)
-        self.dashboard.play_startup_sound()
     
     def closeEvent(self, event):
         self.dashboard.stop()

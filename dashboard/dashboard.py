@@ -23,16 +23,26 @@ import random
 
 
 class SensorThread(QThread):
-    SensorUpdate = pyqtSignal(float)
+    SensorUpdate = pyqtSignal(list)
     
     def run(self):
-        sensor = DistanceSensor(24, 23)
-
+        sensor1 = DistanceSensor(15, 14)
+        sensor2 = DistanceSensor(24,23)
+        sensor3 = DistanceSensor(20,16)
+        sensor4 = DistanceSensor(27,17)
+        sensor5 = DistanceSensor(13,6)
+        sensor6 = DistanceSensor(26,19)
         self.ThreadActive = True
+        distances = [None] * 6
 
         while self.ThreadActive:
-            total_distance = round(sensor.distance*100)
-            self.SensorUpdate.emit(total_distance)
+            distances[0] = round(sensor1.distance*100)
+            distances[1] = round(sensor2.distance*100)
+            distances[2] = round(sensor3.distance*100)
+            distances[3] = round(sensor4.distance*100)
+            distances[4] = round(sensor5.distance*100)
+            distances[5] = round(sensor6.distance*100)
+            self.SensorUpdate.emit(distances)
 
 class VideoThread(QThread):
     ImageUpdate = pyqtSignal(QImage)
@@ -50,6 +60,23 @@ class VideoThread(QThread):
             self.ImageUpdate.emit(self.image)
         cv2.destroyAllWindows()  
         vs.stop()
+
+class ClickableLabel(QtWidgets.QLabel):
+    clicked = QtCore.pyqtSignal(str)
+
+    def __init__(self, path, parent):
+        super(ClickableLabel, self).__init__(parent)
+        pixmap = QtGui.QPixmap(path)
+        self.setPixmap(pixmap)
+        self.setMask(pixmap.mask())
+    
+    def update_image(self, path):
+        pixmap = QtGui.QPixmap(path)
+        self.setPixmap(pixmap)
+        self.setMask(pixmap.mask())
+    
+    def mousePressEvent(self, event):
+        self.clicked.emit(self.objectName())
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -69,7 +96,7 @@ class Ui_MainWindow(object):
         self.initialize_ui(MainWindow)
 
         # Launch the GUI with Tab 1 selected
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         self.play_startup_sound()
 
     def setup_fonts(self):
@@ -103,12 +130,38 @@ class Ui_MainWindow(object):
         # General setup
         MainWindow.setCentralWidget(self.centralwidget)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+    
+    def select_home_tab(self):
+        self.tabWidget.setCurrentIndex(0)
+    
+    def select_media_tab(self):
+        self.tabWidget.setCurrentIndex(2)
+    
+    def select_camera_tab(self):
+        self.tabWidget.setCurrentIndex(1)
+
+    
+    def select_settings_tab(self):
+        self.tabWidget.setCurrentIndex(0)
 
     def setup_dashboard_tab(self, MainWindow):
         # Setting up Tab 1: Main dashboard
         self.mainDash = QtWidgets.QWidget()
         self.mainDash.setObjectName("mainDash")
         self.tabWidget.addTab(self.mainDash, "")
+
+        self.homeButton_1 = ClickableLabel(f"{self.folder_path}/graphics/home.jpg", self.mainDash)
+        self.homeButton_1.setGeometry(100, 18, 40, 40)
+        self.homeButton_1.clicked.connect(self.select_home_tab)
+        self.musicButton_1 = ClickableLabel(f"{self.folder_path}/graphics/music.jpg", self.mainDash)
+        self.musicButton_1.setGeometry(250, 18, 40, 40)
+        self.musicButton_1.clicked.connect(self.select_media_tab)
+        self.cameraButton_1 = ClickableLabel(f"{self.folder_path}/graphics/camera.jpg", self.mainDash)
+        self.cameraButton_1.setGeometry(750, 18, 40, 40)
+        self.cameraButton_1.clicked.connect(self.select_camera_tab)
+        self.settingsButton_1 = ClickableLabel(f"{self.folder_path}/graphics/settings.jpg", self.mainDash)
+        self.settingsButton_1.setGeometry(900, 18, 40, 40)
+        self.settingsButton_1.clicked.connect(self.select_settings_tab)
 
         # Location label
         self.locationLabel = QtWidgets.QLabel(self.mainDash)
@@ -277,6 +330,78 @@ class Ui_MainWindow(object):
         self.front_3d_Label.setText("")
         self.front_3d_Label.setObjectName("front_3d_Label")
         self.front_3d_Label.setStyleSheet("background:transparent;")
+##############################################################################
+        self.back_1a_Label = QtWidgets.QLabel(MainWindow)
+        self.back_1a_Label.setGeometry(QtCore.QRect(819, 93, 44, 32))
+        self.back_1a_Label.setText("")
+        self.back_1a_Label.setObjectName("back_1a_Label")
+        self.back_1a_Label.setStyleSheet("background:transparent;")
+
+        self.back_1b_Label = QtWidgets.QLabel(MainWindow)
+        self.back_1b_Label.setGeometry(QtCore.QRect(804, 72, 55, 43))
+        self.back_1b_Label.setText("")
+        self.back_1b_Label.setObjectName("back_1b_Label")
+        self.back_1b_Label.setStyleSheet("background:transparent;")
+
+        self.back_1c_Label = QtWidgets.QLabel(MainWindow)
+        self.back_1c_Label.setGeometry(QtCore.QRect(789, 51, 65, 48))
+        self.back_1c_Label.setText("")
+        self.back_1c_Label.setObjectName("back_1c_Label")
+        self.back_1c_Label.setStyleSheet("background:transparent;")
+
+        self.back_1d_Label = QtWidgets.QLabel(MainWindow)
+        self.back_1d_Label.setGeometry(QtCore.QRect(774, 30, 74, 54))
+        self.back_1d_Label.setText("")
+        self.back_1d_Label.setObjectName("back_1d_Label")
+        self.back_1d_Label.setStyleSheet("background:transparent;")
+
+        self.back_2a_Label = QtWidgets.QLabel(MainWindow)
+        self.back_2a_Label.setGeometry(QtCore.QRect(860, 89, 46, 16))
+        self.back_2a_Label.setText("")
+        self.back_2a_Label.setObjectName("back_2a_Label")
+        self.back_2a_Label.setStyleSheet("background:transparent;")
+
+        self.back_2b_Label = QtWidgets.QLabel(MainWindow)
+        self.back_2b_Label.setGeometry(QtCore.QRect(855, 68, 56, 23))
+        self.back_2b_Label.setText("")
+        self.back_2b_Label.setObjectName("back_2b_Label")
+        self.back_2b_Label.setStyleSheet("background:transparent;")
+
+        self.back_2c_Label = QtWidgets.QLabel(MainWindow)
+        self.back_2c_Label.setGeometry(QtCore.QRect(849, 46, 67, 24))
+        self.back_2c_Label.setText("")
+        self.back_2c_Label.setObjectName("back_2c_Label")
+        self.back_2c_Label.setStyleSheet("background:transparent;")
+
+        self.back_2d_Label = QtWidgets.QLabel(MainWindow)
+        self.back_2d_Label.setGeometry(QtCore.QRect(844, 25, 78, 24))
+        self.back_2d_Label.setText("")
+        self.back_2d_Label.setObjectName("back_2d_Label")
+        self.back_2d_Label.setStyleSheet("background:transparent;")
+
+        self.back_3a_Label = QtWidgets.QLabel(MainWindow)
+        self.back_3a_Label.setGeometry(QtCore.QRect(903, 92, 44, 32))
+        self.back_3a_Label.setText("")
+        self.back_3a_Label.setObjectName("back_3a_Label")
+        self.back_3a_Label.setStyleSheet("background:transparent;")
+
+        self.back_3b_Label = QtWidgets.QLabel(MainWindow)
+        self.back_3b_Label.setGeometry(QtCore.QRect(907, 72, 55, 43))
+        self.back_3b_Label.setText("")
+        self.back_3b_Label.setObjectName("back_3b_Label")
+        self.back_3b_Label.setStyleSheet("background:transparent;")
+
+        self.back_3c_Label = QtWidgets.QLabel(MainWindow)
+        self.back_3c_Label.setGeometry(QtCore.QRect(912, 51, 65, 48))
+        self.back_3c_Label.setText("")
+        self.back_3c_Label.setObjectName("back_3c_Label")
+        self.back_3c_Label.setStyleSheet("background:transparent;")
+
+        self.back_3d_Label = QtWidgets.QLabel(MainWindow)
+        self.back_3d_Label.setGeometry(QtCore.QRect(918, 30, 74, 54))
+        self.back_3d_Label.setText("")
+        self.back_3d_Label.setObjectName("back_3d_Label")
+        self.back_3d_Label.setStyleSheet("background:transparent;")
 
         self.overlay = QPixmap("graphics/parking_overlay.png")
         self.center = QPixmap("graphics/go_kart_center.png")
@@ -311,6 +436,35 @@ class Ui_MainWindow(object):
         self.front_3d_OFF = QPixmap("graphics/front_3d_OFF.png")
 
 
+        self.back_1a_ON = QPixmap("graphics/back_1a_ON.png")
+        self.back_1b_ON = QPixmap("graphics/back_1b_ON.png")
+        self.back_1c_ON = QPixmap("graphics/back_1c_ON.png")
+        self.back_1d_ON = QPixmap("graphics/back_1d_ON.png")
+
+        self.back_1a_OFF = QPixmap("graphics/back_1a_OFF.png")
+        self.back_1b_OFF = QPixmap("graphics/back_1b_OFF.png")
+        self.back_1c_OFF = QPixmap("graphics/back_1c_OFF.png")
+        self.back_1d_OFF = QPixmap("graphics/back_1d_OFF.png")
+
+        self.back_2a_ON = QPixmap("graphics/back_2a_ON.png")
+        self.back_2b_ON = QPixmap("graphics/back_2b_ON.png")
+        self.back_2c_ON = QPixmap("graphics/back_2c_ON.png")
+        self.back_2d_ON = QPixmap("graphics/back_2d_ON.png")
+
+        self.back_2a_OFF = QPixmap("graphics/back_2a_OFF.png")
+        self.back_2b_OFF = QPixmap("graphics/back_2b_OFF.png")
+        self.back_2c_OFF = QPixmap("graphics/back_2c_OFF.png")
+        self.back_2d_OFF = QPixmap("graphics/back_2d_OFF.png")
+
+        self.back_3a_ON = QPixmap("graphics/back_3a_ON.png")
+        self.back_3b_ON = QPixmap("graphics/back_3b_ON.png")
+        self.back_3c_ON = QPixmap("graphics/back_3c_ON.png")
+        self.back_3d_ON = QPixmap("graphics/back_3d_ON.png")
+
+        self.back_3a_OFF = QPixmap("graphics/back_3a_OFF.png")
+        self.back_3b_OFF = QPixmap("graphics/back_3b_OFF.png")
+        self.back_3c_OFF = QPixmap("graphics/back_3c_OFF.png")
+        self.back_3d_OFF = QPixmap("graphics/back_3d_OFF.png")
 
         self.overlayLabel.setPixmap(self.overlay)
         self.centerLabel.setPixmap(self.center)
@@ -335,6 +489,19 @@ class Ui_MainWindow(object):
         vboxTab1.addWidget(self.front_3c_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
         vboxTab1.addWidget(self.front_3d_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
 
+        vboxTab1.addWidget(self.back_1a_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_1b_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_1c_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_1d_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_2a_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_2b_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_2c_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_2d_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_3a_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_3b_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_3c_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_3d_Label, 0,0,1,1, QtCore.Qt.AlignHCenter)
+
         self.cameraView.setLayout(vboxTab1)
         self.tabWidget.addTab(self.cameraView, "")
 
@@ -356,12 +523,38 @@ class Ui_MainWindow(object):
     def ImageUpdateSlot(self, Image):
         self.bgLabel.setPixmap(QPixmap.fromImage(Image))
 
-    def SensorUpdateSlot(self, distance):
-        self.front_1a_Label.setPixmap(self.front_1a_ON if distance < self.dist_step_01 else self.front_1a_OFF)
-        self.front_1b_Label.setPixmap(self.front_1b_ON if distance < self.dist_step_02 else self.front_1b_OFF)
-        self.front_1c_Label.setPixmap(self.front_1c_ON if distance < self.dist_step_03 else self.front_1c_OFF)
-        self.front_1d_Label.setPixmap(self.front_1d_ON if distance < self.dist_step_04 else self.front_1d_OFF)  
+    def SensorUpdateSlot(self, distances):
+        self.front_1a_Label.setPixmap(self.front_1a_ON if distances[0] < self.dist_step_01 else self.front_1a_OFF)
+        self.front_1b_Label.setPixmap(self.front_1b_ON if distances[0] < self.dist_step_02 else self.front_1b_OFF)
+        self.front_1c_Label.setPixmap(self.front_1c_ON if distances[0] < self.dist_step_03 else self.front_1c_OFF)
+        self.front_1d_Label.setPixmap(self.front_1d_ON if distances[0] < self.dist_step_04 else self.front_1d_OFF)  
 
+        self.front_2a_Label.setPixmap(self.front_2a_ON if distances[1] < self.dist_step_01 else self.front_2a_OFF)
+        self.front_2b_Label.setPixmap(self.front_2b_ON if distances[1] < self.dist_step_02 else self.front_2b_OFF)
+        self.front_2c_Label.setPixmap(self.front_2c_ON if distances[1] < self.dist_step_03 else self.front_2c_OFF)
+        self.front_2d_Label.setPixmap(self.front_2d_ON if distances[1] < self.dist_step_04 else self.front_2d_OFF)  
+
+        self.front_3a_Label.setPixmap(self.front_3a_ON if distances[2] < self.dist_step_01 else self.front_3a_OFF)
+        self.front_3b_Label.setPixmap(self.front_3b_ON if distances[2] < self.dist_step_02 else self.front_3b_OFF)
+        self.front_3c_Label.setPixmap(self.front_3c_ON if distances[2] < self.dist_step_03 else self.front_3c_OFF)
+        self.front_3d_Label.setPixmap(self.front_3d_ON if distances[2] < self.dist_step_04 else self.front_3d_OFF)  
+
+        
+
+        self.back_1a_Label.setPixmap(self.back_1a_ON if distances[3] < self.dist_step_01 else self.back_1a_OFF)
+        self.back_1b_Label.setPixmap(self.back_1b_ON if distances[3] < self.dist_step_02 else self.back_1b_OFF)
+        self.back_1c_Label.setPixmap(self.back_1c_ON if distances[3] < self.dist_step_03 else self.back_1c_OFF)
+        self.back_1d_Label.setPixmap(self.back_1d_ON if distances[3] < self.dist_step_04 else self.back_1d_OFF)  
+
+        self.back_2a_Label.setPixmap(self.back_2a_ON if distances[4] < self.dist_step_01 else self.back_2a_OFF)
+        self.back_2b_Label.setPixmap(self.back_2b_ON if distances[4] < self.dist_step_02 else self.back_2b_OFF)
+        self.back_2c_Label.setPixmap(self.back_2c_ON if distances[4] < self.dist_step_03 else self.back_2c_OFF)
+        self.back_2d_Label.setPixmap(self.back_2d_ON if distances[4] < self.dist_step_04 else self.back_2d_OFF)  
+
+        self.back_3a_Label.setPixmap(self.back_3a_ON if distances[5] < self.dist_step_01 else self.back_3a_OFF)
+        self.back_3b_Label.setPixmap(self.back_3b_ON if distances[5] < self.dist_step_02 else self.back_3b_OFF)
+        self.back_3c_Label.setPixmap(self.back_3c_ON if distances[5] < self.dist_step_03 else self.back_3c_OFF)
+        self.back_3d_Label.setPixmap(self.back_3d_ON if distances[5] < self.dist_step_04 else self.back_3d_OFF)  
     
     def closeEvent(self, event):
         self.thread.stop()
@@ -378,57 +571,50 @@ class Ui_MainWindow(object):
         self.mediaTab.setObjectName("mediaTab")
         self.tabWidget.addTab(self.mediaTab, "")
 
+        self.homeButton_2 = ClickableLabel(f"{self.folder_path}/graphics/home.jpg", self.mediaTab)
+        self.homeButton_2.setGeometry(100, 18, 40, 40)
+        self.homeButton_2.clicked.connect(self.select_home_tab)
+        self.musicButton_2 = ClickableLabel(f"{self.folder_path}/graphics/music.jpg", self.mediaTab)
+        self.musicButton_2.setGeometry(250, 18, 40, 40)
+        self.musicButton_2.clicked.connect(self.select_media_tab)
+        self.cameraButton_2 = ClickableLabel(f"{self.folder_path}/graphics/camera.jpg", self.mediaTab)
+        self.cameraButton_2.setGeometry(750, 18, 40, 40)
+        self.cameraButton_2.clicked.connect(self.select_camera_tab)
+        self.settingsButton_2 = ClickableLabel(f"{self.folder_path}/graphics/settings.jpg", self.mediaTab)
+        self.settingsButton_2.setGeometry(900, 18, 40, 40)
+        self.settingsButton_2.clicked.connect(self.select_settings_tab)
+        
         self.albumCover = QtWidgets.QLabel(self.mediaTab)
         self.albumCover.setGeometry(QtCore.QRect(370, 60, 300, 300))
         self.albumCover.setText("")
         self.albumCover.setObjectName("albumCover")
 
         self.trackName = QtWidgets.QLabel(self.mediaTab)
-        self.trackName.setGeometry(QtCore.QRect(120, 380, 800, 20))
+        self.trackName.setGeometry(QtCore.QRect(120, 360, 800, 20))
         self.trackName.setAlignment(QtCore.Qt.AlignCenter)
         self.trackName.setObjectName("trackName")
-        self.trackName.setText("Track Name")
+        self.trackName.setText("Loading...")
         self.trackName.setFont(self.bold_30_font)
         self.trackName.setStyleSheet("color: #01CBEE")
 
         self.artistName = QtWidgets.QLabel(self.mediaTab)
-        self.artistName.setGeometry(QtCore.QRect(120, 420, 800, 20))
+        self.artistName.setGeometry(QtCore.QRect(120, 400, 800, 20))
         self.artistName.setAlignment(QtCore.Qt.AlignCenter)
         self.artistName.setObjectName("artistName")
-        self.artistName.setText("Artist Name")
         self.artistName.setFont(self.light_20_font)
         self.artistName.setStyleSheet("color: white")
 
-        self.playPauseButton = QtWidgets.QPushButton(self.mediaTab)
-        self.playPauseButton.setGeometry(QtCore.QRect(410, 490, 215, 23))
-        self.playPauseButton.setObjectName("playPauseButton")
-        self.playPauseButton.setText("Play/Pause")
-        self.playPauseButton.setFont(self.light_20_font)
-        self.playPauseButton.setStyleSheet("color: #01CBEE")
+        self.playPauseButton = ClickableLabel(f"{self.folder_path}/graphics/pause.jpg", self.mediaTab)
+        self.playPauseButton.setGeometry(472, 435, 96, 96)
         self.playPauseButton.clicked.connect(self.play_track)
 
-        self.nextButton = QtWidgets.QPushButton(self.mediaTab)
-        self.nextButton.setGeometry(QtCore.QRect(700, 490, 100, 23))
-        self.nextButton.setObjectName("nextButton")
-        self.nextButton.setText("Next")
-        self.nextButton.setFont(self.light_20_font)
-        self.nextButton.setStyleSheet("color: #01CBEE")
-        self.nextButton.clicked.connect(self.next_track)
-
-        self.prevButton = QtWidgets.QPushButton(self.mediaTab)
-        self.prevButton.setGeometry(QtCore.QRect(200, 490, 100, 23))
-        self.prevButton.setObjectName("prevButton")
-        self.prevButton.setText("Prev")
-        self.prevButton.setFont(self.light_20_font)
-        self.prevButton.setStyleSheet("color: #01CBEE")
+        self.prevButton = ClickableLabel(f"{self.folder_path}/graphics/previous.jpg", self.mediaTab)
+        self.prevButton.setGeometry(390, 455, 54, 54)
         self.prevButton.clicked.connect(self.prev_track)
 
-        """
-        self.horizontalSlider = QtWidgets.QSlider(self.mediaTab)
-        self.horizontalSlider.setGeometry(QtCore.QRect(219, 280, 221, 20))
-        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider.setObjectName("horizontalSlider")
-        """
+        self.nextButton = ClickableLabel(f"{self.folder_path}/graphics/skip.jpg", self.mediaTab)
+        self.nextButton.setGeometry(600, 455, 54, 54)
+        self.nextButton.clicked.connect(self.next_track)
 
         self.timeLabel_2 = QtWidgets.QLabel(self.mediaTab)
         self.timeLabel_2.setGeometry(QtCore.QRect(390, 0, 261, 71))
@@ -454,6 +640,8 @@ class Ui_MainWindow(object):
     
     def run_media_player(self):
         self.player = vlc.MediaPlayer()
+        # Pause for 7.5 seconds (wait for startup sound to finish playing)
+        time.sleep(7.5)
         while not self.stop_media_player:
             # Reached past last song
             if self.curr_song_index == len(self.song_list):
@@ -462,7 +650,7 @@ class Ui_MainWindow(object):
             elif self.curr_song_index == -1:
                 self.curr_song_index = len(self.song_list) -1
 
-            print(f"Playing {self.song_list[self.curr_song_index]}")
+            # print(f"Playing {self.song_list[self.curr_song_index]}")
             # Update track info
             self.load_track_data(self.song_list[self.curr_song_index])
             media = vlc.Media(f"{self.folder_path}/music/{self.song_list[self.curr_song_index]}")
@@ -491,12 +679,15 @@ class Ui_MainWindow(object):
     
     def load_track_data(self, song):
         track_path = f"{self.folder_path}/music/{song}"
-        print(f"Track path: {track_path}")
+        # print(f"Track path: {track_path}")
         mp3_file = File(track_path, easy=True)
         track_name = mp3_file.get('title')[0].replace("&", "and")
         artist_name = mp3_file.get('artist')[0].replace("&", "and")
-        self.trackName.setText(f"{track_name[:25]}...")
         self.artistName.setText(artist_name.replace("/", ", "))
+        if len(track_name) < 25:
+            self.trackName.setText(track_name)
+        else:
+            self.trackName.setText(f"{track_name[:25]}...")
 
         tags = ID3(track_path)
         album_cover = tags.getall("APIC")[0].data
@@ -513,9 +704,11 @@ class Ui_MainWindow(object):
         if self.player.is_playing():
             self.play_music = False
             self.player.pause()
+            self.playPauseButton.update_image(f"{self.folder_path}/graphics/play.jpg")
         else:
             self.play_music = True
             self.player.play()
+            self.playPauseButton.update_image(f"{self.folder_path}/graphics/pause.jpg")
     
     def prev_track(self):
         self.previous_song = True
