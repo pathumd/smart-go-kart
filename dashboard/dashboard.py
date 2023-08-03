@@ -1,50 +1,62 @@
+import typing
 import cv2
 import csv
 import os
 from gpiozero.pins.pigpio import PiGPIOPin
 from imutils.video import VideoStream
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QThread
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
 from PyQt5.QtGui import QPixmap, QImage
 import gpsd
 from threading import Thread
 import time
 from datetime import datetime
 import subprocess
-from gpiozero import DistanceSensor 
+from gpiozero import DistanceSensor, Buzzer
+from statistics import mean
 from time import sleep
 from mutagen.mp3 import MP3
 from mutagen.id3 import ID3
 from mutagen import File
 from PIL import Image
 from io import BytesIO
+import Adafruit_DHT
 import vlc
 import random
 
 
 class SensorThread(QThread):
+    def __init__(self, distances):
+        super().__init__()
+        self.distances = distances
+
     SensorUpdate = pyqtSignal(list)
-    
+
     def run(self):
         sensor1 = DistanceSensor(15, 14)
         sensor2 = DistanceSensor(24,23)
         sensor3 = DistanceSensor(20,16)
         sensor4 = DistanceSensor(27,17)
-        sensor5 = DistanceSensor(13,6)
-        sensor6 = DistanceSensor(26,19)
+        sensor5 = DistanceSensor(6,5)
+        sensor6 = DistanceSensor(19,13)
         self.ThreadActive = True
-        distances = [None] * 6
 
         while self.ThreadActive:
-            distances[0] = round(sensor1.distance*100)
-            distances[1] = round(sensor2.distance*100)
-            distances[2] = round(sensor3.distance*100)
-            distances[3] = round(sensor4.distance*100)
-            distances[4] = round(sensor5.distance*100)
-            distances[5] = round(sensor6.distance*100)
-            self.SensorUpdate.emit(distances)
+            self.distances[0] = round(sensor1.distance*100)
+            self.distances[1] = round(sensor2.distance*100)
+            self.distances[2] = round(sensor3.distance*100)
+            self.distances[3] = round(sensor4.distance*100)
+            self.distances[4] = round(sensor5.distance*100)
+            self.distances[5] = round(sensor6.distance*100)
+            self.SensorUpdate.emit(self.distances)
+    
+    def get_distances(self):
+        return self.distances
 
 class VideoThread(QThread):
+    def __init__(self):
+        super().__init__()
+
     ImageUpdate = pyqtSignal(QImage)
 
     def run(self):
@@ -52,9 +64,9 @@ class VideoThread(QThread):
         usingPiCamera = True
         frameSize = (1024, 600)
         vs = VideoStream(src=0, usePiCamera=usingPiCamera, resolution=frameSize, framerate=32).start()
-        time.sleep(0.5)
+        time.sleep(2)
         while self.ThreadActive:     
-            self.frame = vs.read()  
+            self.frame = vs.read()
             self.image = QtGui.QImage(self.frame.data, self.frame.shape[1], self.frame.shape[0], QtGui.QImage.Format_RGB888).rgbSwapped()
             time.sleep(0.1)
             self.ImageUpdate.emit(self.image)
@@ -227,6 +239,7 @@ class Ui_MainWindow(object):
 
 
     def setup_camera_tab(self, MainWindow):
+        distances = [None] * 6
         # Setting up Tab 2: Camera View
         self.cameraView = QtWidgets.QWidget()
         self.cameraView.setObjectName("cameraView")
@@ -516,7 +529,7 @@ class Ui_MainWindow(object):
         self.VideoThread.start()
         self.VideoThread.ImageUpdate.connect(self.ImageUpdateSlot)
 
-        self.SensorThread = SensorThread()
+        self.SensorThread = SensorThread(distances)
         self.SensorThread.start()
         self.SensorThread.SensorUpdate.connect(self.SensorUpdateSlot)
     
@@ -742,16 +755,24 @@ class Ui_MainWindow(object):
         self.initialize_location_csv()
         # Update time every second
         self.time_thread = Thread(target=self.update_time)
+        # Update temperature every second
+        self.temp_thread = Thread(target=self.update_temp)
+        # Update buzzer
+        self.buzzer_thread = Thread(target=self.update_buzzer)
         # Update camera
         #Update sensors
 
         self.update_speed_started = True
         self.update_location_started = True
         self.update_time_started = True
+        self.update_temp_started = True
+        self.update_buzzer_started = True
 
         self.speed_thread.start()
         self.location_thread.start()
         self.time_thread.start()
+        self.temp_thread.start()
+        self.buzzer_thread.start()
 
     def play_startup_sound(self):
         self.media_player = vlc.MediaPlayer()
@@ -793,6 +814,17 @@ class Ui_MainWindow(object):
         curr_time = time.strftime("%I:%M %p")
         return curr_time
 
+    def get_temp(self):
+        DHT_SENSOR = Adafruit_DHT.DHT11
+        DHT_PIN = 26
+
+        humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
+        #print(f"Temperature is: {temperature}")
+        #print(f"Humidity is: {humidity}")
+        if temperature is not None:
+            return int(temperature)
+        else:
+            return 0
     
     def get_speed(self):
         # Get gps packet
@@ -841,6 +873,12 @@ class Ui_MainWindow(object):
             self.locationValueLabel.setText(self.get_current_suberb())
             time.sleep(5)
     
+    def update_temp(self):
+        while self.update_temp_started:
+            # Set current temp
+            self.outTempValLabel.setText(f"{self.get_temp()} C")
+            time.sleep(10)
+
     def update_time(self):
         while self.update_time_started:
             # Set current time
@@ -849,15 +887,32 @@ class Ui_MainWindow(object):
             self.timeLabel_2.setText(curr_time)
             time.sleep(1)
 
+    def update_buzzer(self):
+        buz = Buzzer(21)
+        while self.update_buzzer_started:
+            distances = self.SensorThread.get_distances()
+            #print('#')
+            time.sleep(0.001)
+            if all(distance is not None for distance in distances):
+                distance_avg = mean(distances) / 90
+                #print(f"Distance is {distance_avg}")
+                #buz.on()
+                #time.sleep(distance_avg)
+                #buz.off()
+                #time.sleep(distance_avg)
+
     def stop(self):
         print("Exiting...")
         self.update_location_started = False
         self.update_speed_started = False
         self.update_time_started = False
+        self.update_temp_started = False
+        self.update_buzzer_started = False
         self.stop_media_player = True
-
 
         self.speed_thread.join()
         self.time_thread.join()
         self.location_thread.join()
+        self.temp_thread.join()
         self.media_player_thread.join()
+        self.buzzer_thread.join()
