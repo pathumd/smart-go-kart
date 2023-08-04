@@ -1,3 +1,9 @@
-import Adafruit_DHT as dht
-h,t = dht.read_retry(dht.DHT22, 12)
-print(str(h))
+from gpiozero import Buzzer
+from time import sleep
+
+buz = Buzzer(26)
+
+while True:
+	buz.on()
+	sleep(1)
+	buz.off()

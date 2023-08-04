@@ -1,98 +1,33 @@
-import typing
-import cv2
 import csv
 import os
-from gpiozero.pins.pigpio import PiGPIOPin
-from imutils.video import VideoStream
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtGui import QPixmap
 import gpsd
 from threading import Thread
 import time
 from datetime import datetime
 import subprocess
-from gpiozero import DistanceSensor, Buzzer
+from gpiozero import Buzzer
 from statistics import mean
-from time import sleep
-from mutagen.mp3 import MP3
 from mutagen.id3 import ID3
 from mutagen import File
-from PIL import Image
-from io import BytesIO
 import Adafruit_DHT
 import vlc
 import random
+import signal
 
+# Import custom thread classes
+from threads.threads import SensorThread, VideoThread, ClickableLabel
 
-class SensorThread(QThread):
-    def __init__(self, distances):
-        super().__init__()
-        self.distances = distances
-
-    SensorUpdate = pyqtSignal(list)
-
-    def run(self):
-        sensor1 = DistanceSensor(15, 14)
-        sensor2 = DistanceSensor(24,23)
-        sensor3 = DistanceSensor(20,16)
-        sensor4 = DistanceSensor(27,17)
-        sensor5 = DistanceSensor(6,5)
-        sensor6 = DistanceSensor(19,13)
-        self.ThreadActive = True
-
-        while self.ThreadActive:
-            self.distances[0] = round(sensor1.distance*100)
-            self.distances[1] = round(sensor2.distance*100)
-            self.distances[2] = round(sensor3.distance*100)
-            self.distances[3] = round(sensor4.distance*100)
-            self.distances[4] = round(sensor5.distance*100)
-            self.distances[5] = round(sensor6.distance*100)
-            self.SensorUpdate.emit(self.distances)
-    
-    def get_distances(self):
-        return self.distances
-
-class VideoThread(QThread):
-    def __init__(self):
-        super().__init__()
-
-    ImageUpdate = pyqtSignal(QImage)
-
-    def run(self):
-        self.ThreadActive = True
-        usingPiCamera = True
-        frameSize = (1024, 600)
-        vs = VideoStream(src=0, usePiCamera=usingPiCamera, resolution=frameSize, framerate=32).start()
-        time.sleep(2)
-        while self.ThreadActive:     
-            self.frame = vs.read()
-            self.image = QtGui.QImage(self.frame.data, self.frame.shape[1], self.frame.shape[0], QtGui.QImage.Format_RGB888).rgbSwapped()
-            time.sleep(0.1)
-            self.ImageUpdate.emit(self.image)
-        cv2.destroyAllWindows()  
-        vs.stop()
-
-class ClickableLabel(QtWidgets.QLabel):
-    clicked = QtCore.pyqtSignal(str)
-
-    def __init__(self, path, parent):
-        super(ClickableLabel, self).__init__(parent)
-        pixmap = QtGui.QPixmap(path)
-        self.setPixmap(pixmap)
-        self.setMask(pixmap.mask())
-    
-    def update_image(self, path):
-        pixmap = QtGui.QPixmap(path)
-        self.setPixmap(pixmap)
-        self.setMask(pixmap.mask())
-    
-    def mousePressEvent(self, event):
-        self.clicked.emit(self.objectName())
-
+"""
+The Ui_MainWindow class models the main GUI window.
+"""
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         
+        signal.signal(signal.SIGINT, self.handler)
+
         self.folder_path = os.path.dirname(os.path.abspath(__file__))
 
         self.setup_fonts()
@@ -151,7 +86,6 @@ class Ui_MainWindow(object):
     
     def select_camera_tab(self):
         self.tabWidget.setCurrentIndex(1)
-
     
     def select_settings_tab(self):
         self.tabWidget.setCurrentIndex(0)
@@ -239,7 +173,6 @@ class Ui_MainWindow(object):
 
 
     def setup_camera_tab(self, MainWindow):
-        distances = [None] * 6
         # Setting up Tab 2: Camera View
         self.cameraView = QtWidgets.QWidget()
         self.cameraView.setObjectName("cameraView")
@@ -529,7 +462,7 @@ class Ui_MainWindow(object):
         self.VideoThread.start()
         self.VideoThread.ImageUpdate.connect(self.ImageUpdateSlot)
 
-        self.SensorThread = SensorThread(distances)
+        self.SensorThread = SensorThread()
         self.SensorThread.start()
         self.SensorThread.SensorUpdate.connect(self.SensorUpdateSlot)
     
@@ -671,7 +604,7 @@ class Ui_MainWindow(object):
             self.player.play()
             # Wait for the song to play
             time.sleep(3)
-            while True:
+            while not self.stop_media_player:
                 # Song is finished, move to next song
                 if self.player.is_playing() != 1 and self.play_music:
                     self.curr_song_index += 1
@@ -797,19 +730,6 @@ class Ui_MainWindow(object):
                 self.location_dict[city[0]] = (float(city[4]), float(city[5]))
 
     def get_time(self):
-        """
-        # Get gps packet
-        gps_packet = gpsd.get_current()
-        # Extract time
-        date_time = str(gps_packet.time)
-    
-        split_list = date_time.split("T")
-        gps_time = split_list[1]
-        hour_minute = gps_time.split(":")
-        hour = hour_minute[0]
-        minute = hour_minute[1]
-        return f"{hour}:{minute} {'PM' if int(hour) > 11 else 'AM'}"
-        """
         now = datetime.now()
         curr_time = time.strftime("%I:%M %p")
         return curr_time
@@ -833,7 +753,7 @@ class Ui_MainWindow(object):
         speed_mph = float(gps_packet.hspeed)
         # Convert speed to int and kmh
         speed_kmh_int = int(speed_mph * 1.609344)
-        #print(f"Current speed: {speed_kmh_int}")
+        # print(f"Current speed: {speed_kmh_int}")
         return speed_kmh_int
     
     def get_current_suberb(self):
@@ -842,7 +762,7 @@ class Ui_MainWindow(object):
         # Get latitude and longitude
         lat = gps_packet.lat
         long = gps_packet.lon
-        #print(f"My coordinates: {lat}, {long}")
+        # print(f"My coordinates: {lat}, {long}")
         
         curr_match = 100.00
         matched_city = ""
@@ -891,16 +811,18 @@ class Ui_MainWindow(object):
         buz = Buzzer(21)
         while self.update_buzzer_started:
             distances = self.SensorThread.get_distances()
-            #print('#')
             time.sleep(0.001)
             if all(distance is not None for distance in distances):
-                distance_avg = mean(distances) / 90
+                distance_avg = mean(distances) / 110
                 #print(f"Distance is {distance_avg}")
-                #buz.on()
-                #time.sleep(distance_avg)
-                #buz.off()
-                #time.sleep(distance_avg)
+                buz.on()
+                time.sleep(distance_avg)
+                buz.off()
+                time.sleep(distance_avg)
 
+    def handler(self, signum, frame):
+        self.stop()
+    
     def stop(self):
         print("Exiting...")
         self.update_location_started = False
@@ -911,8 +833,15 @@ class Ui_MainWindow(object):
         self.stop_media_player = True
 
         self.speed_thread.join()
+        print("Speed thread stopped.")
         self.time_thread.join()
+        print("Time thread stopped.")
         self.location_thread.join()
+        print("Location thread stopped.")
         self.temp_thread.join()
+        print("Temp thread stopped.")
         self.media_player_thread.join()
+        print("Media thread stopped.")
         self.buzzer_thread.join()
+        print("Buzzer thread stopped.")
+        sys.exit(0)
