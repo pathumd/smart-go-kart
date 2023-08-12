@@ -34,6 +34,7 @@ class Ui_MainWindow(object):
         Plays the startup sound for the GUI (Audi startup sound).
         """
         self.media_player = vlc.MediaPlayer()
+        self.media_player.audio_set_volume(100)
         media = vlc.Media(f"{self.folder_path}/sounds/startup_chime.mp3")
         self.media_player.set_media(media)
         self.media_player.play()
@@ -50,6 +51,9 @@ class Ui_MainWindow(object):
         self.folder_path = os.path.dirname(os.path.abspath(__file__))
         # Set up the fonts for the GUI
         self.setup_fonts()
+
+        # Set up GPS sensor
+        self.initialize_gps()
 
         self.setup_window(MainWindow)
         # Perform initial setup of tabs
@@ -69,12 +73,12 @@ class Ui_MainWindow(object):
         """
         # Setup font database
         QtGui.QFontDatabase.addApplicationFont("fonts/RIDGE-LIGHT-OBLIQUE.otf")
-        QtGui.QFontDatabase.addApplicationFont("fonts/Ridge-Bold-Oblique.otf")
+        QtGui.QFontDatabase.addApplicationFont("fonts/RIDGE-Bold-Oblique.otf")
 
         self.light_30_font = QtGui.QFont("RIDGE-LIGHT-OBLIQUE", 30)
-        self.bold_30_font = QtGui.QFont("Ridge-Bold-Oblique", 30)
+        self.bold_30_font = QtGui.QFont("RIDGE-Bold-Oblique", 30)
         self.light_20_font = QtGui.QFont("RIDGE-LIGHT-OBLIQUE", 20)
-        self.speed_font = QtGui.QFont("Ridge-Bold-Oblique", 120)
+        self.speed_font = QtGui.QFont("RIDGE-Bold-Oblique", 120)
 
     def setup_window(self, MainWindow):
         """
@@ -202,25 +206,24 @@ class Ui_MainWindow(object):
     def setup_camera_tab(self, MainWindow):
         """
         Sets up the Tab #2: The camera tab
-        (displays the live camera feed as well as the status of the 6 ultrasonic sensors)
+        (displays the live camera feed as well as the status of 180 degree collision detection)
         """
         # Setting up Tab 2: Camera View
+        self.obstacle_met = False
+        self.sensorYellow = [False] * 6
         self.cameraView = QtWidgets.QWidget()
         self.cameraView.setObjectName("cameraView")
 
-        # self.cameraFrame = QtWidgets.QLabel(self.cameraView)
-        # self.cameraFrame.setStyleSheet("background-color: lightgreen")
-        # self.cameraFrame.setGeometry(QtCore.QRect(0, 0, 1024, 600))
-        # self.cameraFrame.setObjectName("cameraFrame")
 
+        # Set up the camera frame (background) label
         self.bgLabel = QtWidgets.QLabel(MainWindow)
-        self.bgLabel.setStyleSheet("background-color: lightgreen")
         self.bgLabel.setGeometry(QtCore.QRect(0, 0, 1024, 600))
         self.bgLabel.setFrameShape(QtWidgets.QFrame.Box)
         self.bgLabel.setLineWidth(3)
         self.bgLabel.setText("")
         self.bgLabel.setObjectName("bgLabel")
 
+        #Set up up the parking overlay label 
         self.overlayLabel = QtWidgets.QLabel(MainWindow)
         self.overlayLabel.setGeometry(QtCore.QRect(0, 0, 1024, 600))
         self.overlayLabel.setFrameShape(QtWidgets.QFrame.Box)
@@ -229,6 +232,7 @@ class Ui_MainWindow(object):
         self.overlayLabel.setObjectName("overlayLabel")
         self.overlayLabel.setStyleSheet("background:transparent;")
 
+        #Set up the go kart image label
         self.centerLabel = QtWidgets.QLabel(MainWindow)
         self.centerLabel.setGeometry(QtCore.QRect(822, 105, 122, 160))
         self.centerLabel.setFrameShape(QtWidgets.QFrame.Box)
@@ -236,6 +240,14 @@ class Ui_MainWindow(object):
         self.centerLabel.setObjectName("centerLabel")
         self.centerLabel.setStyleSheet("background:transparent;")
 
+        #Set up the back navigation button label
+        self.back_icon = ClickableLabel(f"{self.folder_path}/graphics/back.png", self.mainDash, no_mask=True)
+        self.back_icon.setText("")
+        self.back_icon.setObjectName("back_icon")
+        self.back_icon.setStyleSheet("background:transparent;")
+        self.back_icon.clicked.connect(self.select_back)
+
+        #Set up the front collision detection polygon labels
         self.front_1a_Label = QtWidgets.QLabel(MainWindow)
         self.front_1a_Label.setGeometry(QtCore.QRect(819, 93, 44, 32))
         self.front_1a_Label.setText("")
@@ -307,7 +319,8 @@ class Ui_MainWindow(object):
         self.front_3d_Label.setText("")
         self.front_3d_Label.setObjectName("front_3d_Label")
         self.front_3d_Label.setStyleSheet("background:transparent;")
-        ##############################################################################
+
+        #Set up the back collision detection polygon labels
         self.back_1a_Label = QtWidgets.QLabel(MainWindow)
         self.back_1a_Label.setGeometry(QtCore.QRect(819, 93, 44, 32))
         self.back_1a_Label.setText("")
@@ -380,6 +393,7 @@ class Ui_MainWindow(object):
         self.back_3d_Label.setObjectName("back_3d_Label")
         self.back_3d_Label.setStyleSheet("background:transparent;")
 
+        #Set up the QPixmaps for the camera tab images
         self.overlay = QPixmap("graphics/parking_overlay.png")
         self.center = QPixmap("graphics/go_kart_center.png")
         self.front_1a_ON = QPixmap("graphics/front_1a_ON.png")
@@ -442,11 +456,14 @@ class Ui_MainWindow(object):
         self.back_3c_OFF = QPixmap("graphics/back_3c_OFF.png")
         self.back_3d_OFF = QPixmap("graphics/back_3d_OFF.png")
 
+        #Set the overlay and go kart image to their respective labels
         self.overlayLabel.setPixmap(self.overlay)
         self.centerLabel.setPixmap(self.center)
 
+        #Create a vbox layout to display polygon images over go kart and camera images
         vboxTab1 = QtWidgets.QGridLayout()
 
+        #Add polygon labels to vbox layout
         vboxTab1.addWidget(self.bgLabel)
         vboxTab1.addWidget(self.overlayLabel, 0, 0, 1, 1, QtCore.Qt.AlignHCenter)
         vboxTab1.addWidget(self.centerLabel, 0, 0, 1, 1, QtCore.Qt.AlignHCenter)
@@ -475,58 +492,113 @@ class Ui_MainWindow(object):
         vboxTab1.addWidget(self.back_3b_Label, 0, 0, 1, 1, QtCore.Qt.AlignHCenter)
         vboxTab1.addWidget(self.back_3c_Label, 0, 0, 1, 1, QtCore.Qt.AlignHCenter)
         vboxTab1.addWidget(self.back_3d_Label, 0, 0, 1, 1, QtCore.Qt.AlignHCenter)
+        vboxTab1.addWidget(self.back_icon, 0, 0, 1, 1, QtCore.Qt.AlignHCenter)
 
+        #Add vbox layout to camera tab
         self.cameraView.setLayout(vboxTab1)
         self.tabWidget.addTab(self.cameraView, "")
 
+        #Define maximum/minimum distance steps that ultrasonic sensors must be within to increase polygon proximity 
         self.min_dist = 2
         self.max_dist = 100
         self.dist_step_01 = self.min_dist + round((self.max_dist - self.min_dist) / 4 * 1)
-        self.dist_step_02 = self.min_dist + round((self.max_dist - self.min_dist) / 4 * 2)  # 0.1425
+        self.dist_step_02 = self.min_dist + round((self.max_dist - self.min_dist) / 4 * 2)  
         self.dist_step_03 = self.min_dist + round((self.max_dist - self.min_dist) / 4 * 3)
         self.dist_step_04 = self.min_dist + round((self.max_dist - self.min_dist) / 4 * 4)
 
+        #Create VideoThread instance and signal-slot connection
         self.VideoThread = VideoThread()
         self.VideoThread.start()
         self.VideoThread.ImageUpdate.connect(self.ImageUpdateSlot)
 
+        #Create SensorThread instance and signal-slot connection
         self.SensorThread = SensorThread()
         self.SensorThread.start()
         self.SensorThread.SensorUpdate.connect(self.SensorUpdateSlot)
 
     def ImageUpdateSlot(self, Image):
+        """
+        Acts as slot that receives a signal (camera frame) and displays it on the background label
+        """
         self.bgLabel.setPixmap(QPixmap.fromImage(Image))
 
     def SensorUpdateSlot(self, distances):
+        """
+        Acts as slot that receives a signal (list containing ultrasonic distances) and displays the according proximity polygon on its respective label
+        """
+
+        #Check if the distances of each sensor is within each step and set pixmap (proximity polygon) to its label
+
+        #First column (front)
         self.front_1a_Label.setPixmap(self.front_1a_ON if distances[0] < self.dist_step_01 else self.front_1a_OFF)
-        self.front_1b_Label.setPixmap(self.front_1b_ON if distances[0] < self.dist_step_02 else self.front_1b_OFF)
+        if distances[0] < self.dist_step_02:
+            self.front_1b_Label.setPixmap(self.front_1b_ON)
+            self.sensorYellow[0] = True
+        else:
+            self.front_1b_Label.setPixmap(self.front_1b_OFF)
+            self.sensorYellow[0] = False
         self.front_1c_Label.setPixmap(self.front_1c_ON if distances[0] < self.dist_step_03 else self.front_1c_OFF)
         self.front_1d_Label.setPixmap(self.front_1d_ON if distances[0] < self.dist_step_04 else self.front_1d_OFF)
 
+        #Second label (front)
         self.front_2a_Label.setPixmap(self.front_2a_ON if distances[1] < self.dist_step_01 else self.front_2a_OFF)
-        self.front_2b_Label.setPixmap(self.front_2b_ON if distances[1] < self.dist_step_02 else self.front_2b_OFF)
+        if distances[1] < self.dist_step_02:
+            self.front_2b_Label.setPixmap(self.front_2b_ON)
+            self.sensorYellow[1] = True
+        else:
+            self.front_2b_Label.setPixmap(self.front_2b_OFF)
+            self.sensorYellow[1] = False
         self.front_2c_Label.setPixmap(self.front_2c_ON if distances[1] < self.dist_step_03 else self.front_2c_OFF)
         self.front_2d_Label.setPixmap(self.front_2d_ON if distances[1] < self.dist_step_04 else self.front_2d_OFF)
 
+        #Third column (front)
         self.front_3a_Label.setPixmap(self.front_3a_ON if distances[2] < self.dist_step_01 else self.front_3a_OFF)
-        self.front_3b_Label.setPixmap(self.front_3b_ON if distances[2] < self.dist_step_02 else self.front_3b_OFF)
+        if distances[2] < self.dist_step_02:
+            self.front_3b_Label.setPixmap(self.front_3b_ON)
+            self.sensorYellow[2] = True
+        else:
+            self.front_3b_Label.setPixmap(self.front_3b_OFF)
+            self.sensorYellow[2] = False
         self.front_3c_Label.setPixmap(self.front_3c_ON if distances[2] < self.dist_step_03 else self.front_3c_OFF)
         self.front_3d_Label.setPixmap(self.front_3d_ON if distances[2] < self.dist_step_04 else self.front_3d_OFF)
 
+        #First column (back)
         self.back_1a_Label.setPixmap(self.back_1a_ON if distances[3] < self.dist_step_01 else self.back_1a_OFF)
-        self.back_1b_Label.setPixmap(self.back_1b_ON if distances[3] < self.dist_step_02 else self.back_1b_OFF)
+        if distances[3] < self.dist_step_02:
+            self.back_1b_Label.setPixmap(self.back_1b_ON)
+            self.sensorYellow[3] = True
+        else:
+            self.back_1b_Label.setPixmap(self.back_1b_OFF)
+            self.sensorYellow[3] = False
         self.back_1c_Label.setPixmap(self.back_1c_ON if distances[3] < self.dist_step_03 else self.back_1c_OFF)
         self.back_1d_Label.setPixmap(self.back_1d_ON if distances[3] < self.dist_step_04 else self.back_1d_OFF)
 
+        #Second column (back)
         self.back_2a_Label.setPixmap(self.back_2a_ON if distances[4] < self.dist_step_01 else self.back_2a_OFF)
-        self.back_2b_Label.setPixmap(self.back_2b_ON if distances[4] < self.dist_step_02 else self.back_2b_OFF)
+        if distances[4] < self.dist_step_02:
+            self.back_2b_Label.setPixmap(self.back_2b_ON)
+            self.sensorYellow[4] = True
+        else:
+            self.back_2b_Label.setPixmap(self.back_2b_OFF)
+            self.sensorYellow[4] = False
         self.back_2c_Label.setPixmap(self.back_2c_ON if distances[4] < self.dist_step_03 else self.back_2c_OFF)
         self.back_2d_Label.setPixmap(self.back_2d_ON if distances[4] < self.dist_step_04 else self.back_2d_OFF)
 
+        #Third column (back)
         self.back_3a_Label.setPixmap(self.back_3a_ON if distances[5] < self.dist_step_01 else self.back_3a_OFF)
-        self.back_3b_Label.setPixmap(self.back_3b_ON if distances[5] < self.dist_step_02 else self.back_3b_OFF)
+        if distances[5] < self.dist_step_02:
+            self.back_3b_Label.setPixmap(self.back_3b_ON)
+            self.sensorYellow[5] = True
+        else:
+            self.back_3b_Label.setPixmap(self.back_3b_OFF)
+            self.sensorYellow[5] = False
         self.back_3c_Label.setPixmap(self.back_3c_ON if distances[5] < self.dist_step_03 else self.back_3c_OFF)
         self.back_3d_Label.setPixmap(self.back_3d_ON if distances[5] < self.dist_step_04 else self.back_3d_OFF)
+
+        if any(self.sensorYellow):
+            self.obstacle_met = True
+        else:
+            self.obstacle_met = False
 
     def closeEvent(self, event):
         self.thread.stop()
@@ -661,7 +733,6 @@ class Ui_MainWindow(object):
         """
         # Initialize speed thread
         self.speed_thread = Thread(target=self.update_speed)
-        self._initialize_gps()
 
         # Initialize location thread
         self.location_thread = Thread(target=self.update_location)
@@ -690,7 +761,7 @@ class Ui_MainWindow(object):
         self.temp_thread.start()
         self.buzzer_thread.start()
 
-    def _initialize_gps(self):
+    def initialize_gps(self):
         """
         Initializes the GPS sensor so that receives data.
         """
@@ -719,6 +790,7 @@ class Ui_MainWindow(object):
         """
         # Create instance of VLC Media Player
         self.player = vlc.MediaPlayer()
+        self.player.audio_set_volume(100)
         # Pause for 7.5 seconds (wait for GUI startup sound to finish playing)
         time.sleep(7.5)
 
@@ -847,6 +919,9 @@ class Ui_MainWindow(object):
         """
         # TODO: Settings tab should be index 3 (should contain controls like turning on/off buzzer)
         self.tabWidget.setCurrentIndex(0)
+    def select_back(self):
+        "Switches the GUI to the home tab"
+        self.tabWidget.setCurrentIndex(0)
 
     ##### FUNCTIONS TO GET DATA FROM SENSORS / SYSTEM #####
     def get_time(self):
@@ -969,16 +1044,38 @@ class Ui_MainWindow(object):
         and buzzes at the appropriate frequency.
         """
         buz = Buzzer(21)
+        buzzer_activated = False
+        curr_tab = 0
         while self.update_buzzer_started:
             distances = self.SensorThread.get_distances()
             time.sleep(0.001)
-            if all(distance is not None for distance in distances):
+            # print(self.obstacle_met)
+            if all(distance is not None for distance in distances) and self.obstacle_met:
+                if not buzzer_activated:
+                    # Save currently selected tab
+                    curr_tab = self.tabWidget.currentIndex()
+                
+                buzzer_activated = True
                 distance_avg = mean(distances) / 110
-                # print(f"Distance is {distance_avg}")
+
+                # Set media volume to 50
+                self.player.audio_set_volume(50)
+                # Switch to camera tab
+                self.tabWidget.setCurrentIndex(1)
+                # Switch to camera tab
                 buz.on()
                 time.sleep(distance_avg)
                 buz.off()
                 time.sleep(distance_avg)
+            else:
+                # Check if buzzer was activated
+                if buzzer_activated:
+                    # Set media volume back to 100 (full)
+                    self.player.audio_set_volume(100)
+                    # Switch tab back to previously selected tab
+                    self.tabWidget.setCurrentIndex(curr_tab)
+                    # Set flag back to False
+                    buzzer_activated = False
 
     ##### FUNCTIONS TO HANDLE EXITING #####
     def handler(self, signum, frame):
