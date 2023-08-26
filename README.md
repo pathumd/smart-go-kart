@@ -61,7 +61,7 @@
 
 ## 👨‍💻 Software
 ### Home Tab
-<img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/f9c8d56f-61f8-496f-a7f6-f7e0df935161">
+<img width="800" alt="image" src="https://imgur.com/HeDY6sH">
 
 - Features a navigation menu at the top to quickly switch between tabs
 - Displays the current time using the Raspberry Pi system clock
@@ -70,7 +70,7 @@
 - Displays the tempature outside by polling temperature sensor
 
 ### Media Tab
-<img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/e25d845c-c39f-4811-a193-82aa3acfdb7c">
+<img width="800" alt="image" src="https://imgur.com/0LTQVar">
 
 - Starts playing the media found in `dashboard/music` as a playlist upon startup with automatic shuffling
 - Pulls metadata from each track to display the track's album cover, track name, and artist name(s)
@@ -79,7 +79,7 @@
 - When an obstacle is detected by one of the ultrasonic sensors, the music volume is reduced by 50%
 
 ### Reverse Camera Tab
-<img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/446035f5-45b2-4b8d-9fe1-43ecec878b58">
+<img width="800" alt="image" src="https://imgur.com/yLzlRXp">
 
 - Includes 180 degree collision detection system
 - Features a reverse camera when the Go-kart is in reverse 
