@@ -6,22 +6,22 @@
 
 ## Hardware
 ### Raspberry Pi 4 Model B
-<img width="410" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/0111cc3f-2d61-4e55-b44b-9139947035a3">
+<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/0111cc3f-2d61-4e55-b44b-9139947035a3">
 
 - Used to run the main dashboard application.
 ### GPS Receiver
-<img width="410" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/e07b6c27-cb70-4890-a9bd-f6a1a9255144">
+<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/e07b6c27-cb70-4890-a9bd-f6a1a9255144">
 
 - Used to determine the go-kart's current speed and location.
 ### Ultrasonic sensor (x6)
-<img width="410" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/de923bb6-1ac2-4583-8d88-f98b5fb9f395">
+<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/de923bb6-1ac2-4583-8d88-f98b5fb9f395">
 
 - Used to calculate and determine the proximity of objects surrounding the go-kart
 - Three ultrasonic sensors are positioned at the front of the go-kart, and three at the back
 - (Insert diagram of configuration here)
   
 ### Temperature and Humidity Sensor (x1)
-<img width="410" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/20ca8467-217d-46be-8fdb-044beca935d7">
+<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/20ca8467-217d-46be-8fdb-044beca935d7">
 
 - Used to determine the external temperature of the go-kart.
   
