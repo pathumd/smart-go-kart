@@ -7,7 +7,7 @@
 ## ⚡Hardware
 
 ### Circuit diagram 
-<img width="2000" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/65776520/dd85ece4-47f7-4569-b1ac-7d528b9ca667">
+<img width="2000" alt="image" src="https://i.imgur.com/LCedBPL.jpg">
 
 ### Raspberry Pi 4 Model B
 <img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/0111cc3f-2d61-4e55-b44b-9139947035a3">
@@ -35,7 +35,7 @@
 
 ### Resistors
 - Used a voltage divider circuit with 1kΩ (x6) and 2kΩ (x6) resistors to lower the sensor output voltage from 5V to 3.3V. Consider the example diagram below (values vary).
-<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/65776520/7a4949cc-ca00-487e-9861-f678b794ccd6">
+<img width="300" alt="image" src="https://i.imgur.com/stbM6ib.png">
 
 ### Jumper wires
 
