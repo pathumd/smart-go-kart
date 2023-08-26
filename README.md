@@ -66,7 +66,7 @@
 - Python 3.8.2
 - 
 ## ⚠️ Problems we ran into
-- Many of the online resources supported circuits with 1-2 ultrasonic sensors. Employing 6 ultrasonic sensors was a new obstacle that had to be overcome.
+- Many of the online resources supported circuits with 1-2 ultrasonic sensors. Employing 6 ultrasonic sensors was a new obstacle that had to be overcome. 
 - Layering images over a video in the camera tab (ex. shapes and parking lines) was difficult as they would replace the video QLabel. The solution to this was to implement a vbox layout that hosts the necessary labels similar to an array.
 
 
