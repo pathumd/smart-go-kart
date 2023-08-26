@@ -34,8 +34,8 @@
 - Used two full-sized 830 point breadboards to host 3 ultrasonic sensors each 
 
 ### Resistors
-- Describe different resistor types here
-
+- Used a voltage divider circuit using 1kΩ (x6) and 2kΩ (x6) resistors to lower the sensor output voltage from 5V to 3.3V
+  
 ### Jumper wires
 
 - Describe jumper wires here
