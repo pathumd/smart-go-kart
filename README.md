@@ -37,15 +37,15 @@
 - Describe jumper wires here
 
 ### Wide Angle Camera for Raspberry Pi (Inno-Maker)
-<img width="410" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/269a6b34-9fc2-42bc-8dda-b0a4f6372b49">
+<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/269a6b34-9fc2-42bc-8dda-b0a4f6372b49">
 
 ### CREATIVE Pebbles USB Speakers (x1)
-<img width="410" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/d42893c7-e3bf-4e42-9238-45a1dcaf07fb">
+<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/d42893c7-e3bf-4e42-9238-45a1dcaf07fb">
 
 - Used to play the startup sound for the dashboard and to play media.
 
 ### 7" IPS Touch Display
-<img width="410" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/882cb16b-121a-4bd8-bf0e-5daa7b6913cc">
+<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/882cb16b-121a-4bd8-bf0e-5daa7b6913cc">
 
 - Used to display the main dashboard application.
 
