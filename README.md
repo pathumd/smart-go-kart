@@ -101,3 +101,7 @@
 - Traditional methods for updating the GUI with distances and video frames proved suboptimal. After experimenting with various approaches, a signal-slot connection that utilizes references was settled upon.
 - Finding a mathematical approach for the GUI representation of the collision detection and implementing an accurate buzzer frequency was challenging 
 
+## ⏩ Next steps 
+- Automatically running the dashboard application upon boot-up
+- Engineering the Go-kart frame, mechanics, and dashboard housing
+
