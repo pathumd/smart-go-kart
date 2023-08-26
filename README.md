@@ -10,21 +10,21 @@
 <img width="2000" alt="image" src="https://i.imgur.com/LCedBPL.jpg">
 
 ### Raspberry Pi 4 Model B
-<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/0111cc3f-2d61-4e55-b44b-9139947035a3">
+<img width="300" alt="image" src="https://i.imgur.com/WZcQYSI.png">
 
 - Used to run the main dashboard application.
 ### GPS Receiver
-<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/e07b6c27-cb70-4890-a9bd-f6a1a9255144">
+<img width="300" alt="image" src="https://i.imgur.com/11fM2Am.png">
 
 - Used to determine the go-kart's current speed and location.
 ### HC-SR04 Ultrasonic sensor (x6)
-<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/de923bb6-1ac2-4583-8d88-f98b5fb9f395">
+<img width="300" alt="image" src="https://i.imgur.com/I74SUnb.png">
 
 - Used to calculate and determine the proximity of objects surrounding the go-kart
 - Three ultrasonic sensors are positioned at the front of the go-kart, and three at the back
     
 ### DHT11 Temperature and Humidity Sensor (x1)
-<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/20ca8467-217d-46be-8fdb-044beca935d7">
+<img width="300" alt="image" src="https://i.imgur.com/Z3JI73m.png">
 
 - Used to determine the external temperature of the go-kart.
   
@@ -47,15 +47,15 @@
 - Black = Ground 
   
 ### Wide Angle Camera for Raspberry Pi (Inno-Maker)
-<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/269a6b34-9fc2-42bc-8dda-b0a4f6372b49">
+<img width="300" alt="image" src="https://i.imgur.com/wooMexV.png">
 
 ### CREATIVE Pebbles USB Speakers (x1)
-<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/d42893c7-e3bf-4e42-9238-45a1dcaf07fb">
+<img width="300" alt="image" src="https://i.imgur.com/xj3L626.png">
 
 - Used to play the startup sound for the dashboard and to play media.
 
 ### 7" IPS Touch Display
-<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/882cb16b-121a-4bd8-bf0e-5daa7b6913cc">
+<img width="300" alt="image" src="https://i.imgur.com/YXoSuO2.png">
 
 - Used to display the main dashboard application.
 
