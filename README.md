@@ -61,7 +61,7 @@
 
 ## 👨‍💻 Software
 ### Home Tab
-<img width="800" alt="image" src="https://imgur.com/HeDY6sH">
+<img width="800" alt="image" src="https://imgur.com/HeDY6sH.png">
 
 - Features a navigation menu at the top to quickly switch between tabs
 - Displays the current time using the Raspberry Pi system clock
@@ -70,7 +70,7 @@
 - Displays the tempature outside by polling temperature sensor
 
 ### Media Tab
-<img width="800" alt="image" src="https://imgur.com/0LTQVar">
+<img width="800" alt="image" src="https://imgur.com/0LTQVar.png">
 
 - Starts playing the media found in `dashboard/music` as a playlist upon startup with automatic shuffling
 - Pulls metadata from each track to display the track's album cover, track name, and artist name(s)
@@ -79,7 +79,7 @@
 - When an obstacle is detected by one of the ultrasonic sensors, the music volume is reduced by 50%
 
 ### Reverse Camera Tab
-<img width="800" alt="image" src="https://imgur.com/yLzlRXp">
+<img width="800" alt="image" src="https://imgur.com/yLzlRXp.png">
 
 - Includes 180 degree collision detection system
 - Features a reverse camera when the Go-kart is in reverse 
