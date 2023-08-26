@@ -81,7 +81,7 @@
 ### Reverse Camera Tab
 <img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/446035f5-45b2-4b8d-9fe1-43ecec878b58">
 
-- Includes 180 degree collision detection
+- Includes 180 degree collision detection system
 - Features a reverse camera when the Go-kart is in reverse 
 - Includes parking assistance
 - Includes a buzzer with frequency that corresponds to the proximity to obstacles
