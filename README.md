@@ -75,7 +75,7 @@
 
 - Includes 180 degree collision detection
 - Includes reverse camera
-- Includes assistance
+- Includes parking assistance
 - Includes a buzzer with frequency that corresponds to the proximity to obstacles
 -  Uses distance steps to display levels of proximity to objects. When a level turns yellow, the program automatically reduces the music volume, switches to the camera tab, and activates the buzzer
 
