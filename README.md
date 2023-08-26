@@ -1,4 +1,4 @@
-# Smart Go Kart
+# 🏎️ Smart Go Kart
 
 ## 🤝 Contributors
 - 🥇 Pathum Danthanarayana ([@pathum.danthanarayana](https://www.instagram.com/pathum.danthanarayana/))
