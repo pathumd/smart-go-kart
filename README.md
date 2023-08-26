@@ -87,7 +87,7 @@
 - Features a reverse camera when the Go-kart is in reverse 
 - Includes parking assistance
 - Includes a buzzer with frequency that corresponds to the proximity to obstacles
-- Uses distance steps to display colour-coded levels of proximity to obstacles using distance data recieved from Ultrasonic Sensors
+- Uses distance steps to display colour-coded levels of proximity to obstacles with distance data recieved from ultrasonic sensors
 -  When one of the sensors turn yellow, the program automatically reduces the music volume, switches to the camera tab, and activates the buzzer
 
 
