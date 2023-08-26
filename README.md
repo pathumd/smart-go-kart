@@ -4,7 +4,7 @@
 - 🥇 Pathum Danthanarayana ([@pathum.danthanarayana](https://www.instagram.com/pathum.danthanarayana/))
 - 🥇 Pasindu Danthanarayana ([@pasindu.md](https://www.instagram.com/pasindu.md/))
 
-## Hardware
+## ⚡Hardware
 
 ### Schematic 
 <img width="2000" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/65776520/dd85ece4-47f7-4569-b1ac-7d528b9ca667">
@@ -59,13 +59,13 @@
 
 - Used to display the main dashboard application.
 
-## Software
+## 👨‍💻 Software 
 ### Raspberry Pi:
 - Raspbian (insert version here)
 ### Python
 - Python 3.8.2
 - 
-### Problems we ran into
+## ⚠️ Problems we ran into
 - Many of the resources online were circuits with 1-2 ultrasonic sensors. Employing 6 ultrasonic sensors were a new obstacle that had to be overcome.
 - Layering images over a video in the collision detection tab (ex. shapes and parking lines) were difficult as they would replace the video QLabel. The solution to this was to implement a vbox layout that hosts the necessary labels similar to an array.
 
