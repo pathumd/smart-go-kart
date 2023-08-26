@@ -6,7 +6,7 @@
 
 ## ⚡Hardware
 
-### Schematic 
+### Circuit diagram 
 <img width="2000" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/65776520/dd85ece4-47f7-4569-b1ac-7d528b9ca667">
 
 ### Raspberry Pi 4 Model B
@@ -82,11 +82,11 @@
 <img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/446035f5-45b2-4b8d-9fe1-43ecec878b58">
 
 - Includes 180 degree collision detection
-- Includes reverse camera
+- Features a reverse camera when the Go-kart is in reverse 
 - Includes parking assistance
 - Includes a buzzer with frequency that corresponds to the proximity to obstacles
--  Uses distance steps to display levels of proximity to obstacles
--  When a level turns yellow, the program automatically reduces the music volume, switches to the camera tab, and activates the buzzer
+- Uses distance steps to display colour-coded levels of proximity to obstacles
+-  When one of the sensors turn yellow, the program automatically reduces the music volume, switches to the camera tab, and activates the buzzer
 
 
 ## 📖 Software Dependencies
