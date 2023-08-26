@@ -99,5 +99,5 @@
 - Many of the online resources supported circuits with 1-2 ultrasonic sensors. Employing 6 ultrasonic sensors was a new obstacle that had to be overcome. 
 - Layering images over a video in the camera tab (ex. shapes and parking lines) was difficult as they would replace the video QLabel. The solution to this was to implement a vbox layout that hosts the necessary labels similar to an array.
 - Traditional methods for updating the GUI with distances and video frames proved suboptimal. After experimenting with various approaches, a signal-slot connection that utilizes references was settled upon.
-
+- Finding a mathematical approach for the GUI representation of the collision detection and buzzer frequency was challenging 
 
