@@ -1,6 +1,6 @@
 # Smart Go Kart
 
-## Contributors
+## 🤝 Contributors
 - 🥇 Pathum Danthanarayana ([@pathum.danthanarayana](https://www.instagram.com/pathum.danthanarayana/))
 - 🥇 Pasindu Danthanarayana ([@pasindu.md](https://www.instagram.com/pasindu.md/))
 
