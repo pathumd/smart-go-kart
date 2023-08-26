@@ -73,7 +73,11 @@
 ### Reverse Camera Tab
 <img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/446035f5-45b2-4b8d-9fe1-43ecec878b58">
 
-- Talk about Camera Tab here
+- Includes 180 degree collision detection
+- Includes reverse camera
+- Includes assistance
+- Includes a buzzer with frequency that corresponds to the proximity to obstacles
+-  Uses distance steps to display levels of proximity to objects. When a level turns yellow, the program automatically reduces the music volume, switches to the camera tab, and activates the buzzer
 
 
 ## 📖 Software Dependencies
