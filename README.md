@@ -5,6 +5,10 @@
 - 🥇 Pasindu Danthanarayana ([@pasindu.md](https://www.instagram.com/pasindu.md/))
 
 ## Hardware
+
+### Schematic 
+![gokart_circuit](https://github.com/pathumd/smart-go-kart/assets/65776520/dd85ece4-47f7-4569-b1ac-7d528b9ca667)
+
 ### Raspberry Pi 4 Model B
 <img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/0111cc3f-2d61-4e55-b44b-9139947035a3">
 
@@ -18,8 +22,7 @@
 
 - Used to calculate and determine the proximity of objects surrounding the go-kart
 - Three ultrasonic sensors are positioned at the front of the go-kart, and three at the back
-- (Insert diagram of configuration here)
-  
+    
 ### Temperature and Humidity Sensor (x1)
 <img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/20ca8467-217d-46be-8fdb-044beca935d7">
 
@@ -27,7 +30,8 @@
   
 ### Breadboard (x3)
 
-- Describe different breadboards used here
+- Used a half-sized 400 point breadboard to host the temperature sensor
+- Used two full-sized 830 point breadboards to host 3 ultrasonic sensors each 
 
 ### Resistors
 - Describe different resistor types here
