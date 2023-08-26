@@ -70,7 +70,7 @@
 
 - Talk about Media Tab here
 
-### Camera Tab
+### Reverse Camera Tab
 <img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/446035f5-45b2-4b8d-9fe1-43ecec878b58">
 
 - Talk about Camera Tab here
