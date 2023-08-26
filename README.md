@@ -72,7 +72,7 @@
 ### Media Tab
 <img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/e25d845c-c39f-4811-a193-82aa3acfdb7c">
 
-- Starts playing the media found in `dashboard/music` as a playlist upon startup
+- Starts playing the media found in `dashboard/music` as a playlist upon startup with automatic shuffling
 - Pulls metadata from each track to display the track's album cover, track name, and artist name(s)
 - Allows the user to play, pause, skip, or move to previous track
 - Media is run in a background thread, allowing the user to freely move between tabs while music plays
