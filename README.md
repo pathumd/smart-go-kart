@@ -59,7 +59,24 @@
 
 - Used to display the main dashboard application.
 
-## 👨‍💻 Software 
+## 👨‍💻 Software
+### Home Tab
+<img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/f9c8d56f-61f8-496f-a7f6-f7e0df935161">
+
+- Talk about Home Tab here
+
+### Media Tab
+<img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/e25d845c-c39f-4811-a193-82aa3acfdb7c">
+
+- Talk about Media Tab here
+
+### Camera Tab
+<img width="800" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/446035f5-45b2-4b8d-9fe1-43ecec878b58">
+
+- Talk about Camera Tab here
+
+
+## 📖 Software Dependencies
 ### Raspberry Pi:
 - Raspbian (insert version here)
 ### Python
