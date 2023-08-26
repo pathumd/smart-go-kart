@@ -101,6 +101,10 @@
 - mutagen
 - Adafruit_DHT
 - vlc
+### Linux dependencies
+- pulseaudio
+- gpsd
+- gpsd-clients
   
 ## ⚠️ Problems we ran into
 - Many of the online resources supported circuits with 1-2 ultrasonic sensors. Employing 6 ultrasonic sensors was a new obstacle that had to be overcome. 
