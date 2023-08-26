@@ -34,8 +34,9 @@
 - Used two full-sized 830 point breadboards to host 3 ultrasonic sensors each 
 
 ### Resistors
-- Used a voltage divider circuit using 1kΩ (x6) and 2kΩ (x6) resistors to lower the sensor output voltage from 5V to 3.3V
-  
+- Used a voltage divider circuit using 1kΩ (x6) and 2kΩ (x6) resistors to lower the sensor output voltage from 5V to 3.3V. Consider the example diagram below.
+<img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/65776520/7a4949cc-ca00-487e-9861-f678b794ccd6">
+
 ### Jumper wires
 
 - Describe jumper wires here
