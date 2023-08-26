@@ -7,7 +7,7 @@
 ## Hardware
 
 ### Schematic 
-<img width="900" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/65776520/dd85ece4-47f7-4569-b1ac-7d528b9ca667">
+<img width="2000" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/65776520/dd85ece4-47f7-4569-b1ac-7d528b9ca667">
 
 ### Raspberry Pi 4 Model B
 <img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/0111cc3f-2d61-4e55-b44b-9139947035a3">
