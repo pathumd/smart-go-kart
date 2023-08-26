@@ -39,8 +39,13 @@
 
 ### Jumper wires
 
-- Describe jumper wires here
-
+- Female-to-male jumper wires were used to connect the Raspberry Pi to the breadboards
+- Female-to-female jumper wires were used to connect the buzzer to the Raspberry Pi
+- Red = VCC
+- Blue = Trig
+- Yellow = Echo
+- Black = Ground 
+  
 ### Wide Angle Camera for Raspberry Pi (Inno-Maker)
 <img width="300" alt="image" src="https://github.com/pathumd/smart-go-kart/assets/61627702/269a6b34-9fc2-42bc-8dda-b0a4f6372b49">
 
