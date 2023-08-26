@@ -65,6 +65,8 @@
 ### Python
 - Python 3.8.2
 - 
-
+### Problems we ran into
+- Many of the resources online were circuits with 1-2 ultrasonic sensors. Employing 6 ultrasonic sensors were a new obstacle that had to be overcome.
+- Layering images over a video in the collision detection tab (ex. shapes and parking lines) were difficult as they would replace the video QLabel. The solution to this was to implement a vbox layout that hosts the necessary labels similar to an array.
 
 
