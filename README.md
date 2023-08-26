@@ -49,7 +49,7 @@
 ### Wide Angle Camera for Raspberry Pi (Inno-Maker)
 <img width="300" alt="image" src="https://i.imgur.com/wooMexV.png">
 
-- Used for providing user with rear visibility
+- Used to provide rear visibility for user
   
 ### CREATIVE Pebbles USB Speakers (x1)
 <img width="300" alt="image" src="https://i.imgur.com/xj3L626.png">
