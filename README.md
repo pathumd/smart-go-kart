@@ -10,21 +10,21 @@
 <img width="2000" alt="image" src="https://i.imgur.com/LCedBPL.jpg">
 
 ### Raspberry Pi 4 Model B
-<img width="300" alt="image" src="https://i.imgur.com/WZcQYSI.png">
+<img width="600" alt="image" src="https://i.imgur.com/zRTXsvS.jpg">
 
 - Used to run the main dashboard application.
 ### GPS Receiver
-<img width="300" alt="image" src="https://i.imgur.com/11fM2Am.png">
+<img width="600" alt="image" src="https://i.imgur.com/ueGWqj0.jpg">
 
 - Used to determine the go-kart's current speed and location.
 ### HC-SR04 Ultrasonic sensor (x6)
-<img width="300" alt="image" src="https://i.imgur.com/I74SUnb.png">
+<img width="600" alt="image" src="https://i.imgur.com/XsG7lCa.jpg">
 
 - Used to calculate and determine the proximity of objects surrounding the go-kart
 - Three ultrasonic sensors are positioned at the front of the go-kart, and three at the back
     
 ### DHT11 Temperature and Humidity Sensor (x1)
-<img width="300" alt="image" src="https://i.imgur.com/Z3JI73m.png">
+<img width="600" alt="image" src="https://i.imgur.com/99XOEMq.jpg">
 
 - Used to determine the external temperature of the go-kart.
   
@@ -35,7 +35,7 @@
 
 ### Resistors
 - Used a voltage divider circuit with 1kΩ (x6) and 2kΩ (x6) resistors to lower the sensor output voltage from 5V to 3.3V. Consider the example diagram below (values vary).
-<img width="300" alt="image" src="https://i.imgur.com/stbM6ib.png">
+<img width="600" alt="image" src="https://i.imgur.com/stbM6ib.png">
 
 ### Jumper wires
 
@@ -47,17 +47,17 @@
 - Black = Ground 
   
 ### Wide Angle Camera for Raspberry Pi (Inno-Maker)
-<img width="300" alt="image" src="https://i.imgur.com/wooMexV.png">
+<img width="600" alt="image" src="https://i.imgur.com/RY3AesE.jpg">
 
 - Used to provide rear visibility for user
   
 ### CREATIVE Pebbles USB Speakers (x1)
-<img width="300" alt="image" src="https://i.imgur.com/xj3L626.png">
+<img width="600" alt="image" src="https://i.imgur.com/xCpVcZI.jpg">
 
 - Used to play the startup sound for the dashboard and to play media.
 
 ### 7" IPS Touch Display
-<img width="300" alt="image" src="https://i.imgur.com/YXoSuO2.png">
+<img width="600" alt="image" src="https://i.imgur.com/cj3oy0s.jpg">
 
 - Used to display the main dashboard application.
 
@@ -81,7 +81,7 @@
 - When an obstacle is detected by one of the ultrasonic sensors, the music volume is reduced by 50%
 
 ### Reverse Camera Tab
-<img width="800" alt="image" src="https://imgur.com/yLzlRXp.png">
+<img width="600" alt="image" src="https://imgur.com/yLzlRXp.png">
 
 - Includes 180 degree collision detection system
 - Features a reverse camera when the Go-kart is in reverse 
