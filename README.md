@@ -81,7 +81,7 @@
 - When an obstacle is detected by one of the ultrasonic sensors, the music volume is reduced by 50%
 
 ### Reverse Camera Tab
-<img width="600" alt="image" src="https://imgur.com/yLzlRXp.png">
+<img width="800" alt="image" src="https://imgur.com/yLzlRXp.png">
 
 - Includes 180 degree collision detection system
 - Features a reverse camera when the Go-kart is in reverse 
